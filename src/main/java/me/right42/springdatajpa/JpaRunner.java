@@ -1,9 +1,7 @@
 package me.right42.springdatajpa;
 
-import me.right42.springdatajpa.domain.Account;
 import me.right42.springdatajpa.domain.Comment;
 import me.right42.springdatajpa.domain.Post;
-import me.right42.springdatajpa.domain.Study;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
