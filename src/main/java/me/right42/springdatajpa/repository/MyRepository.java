@@ -1,18 +1,13 @@
 package me.right42.springdatajpa.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.data.repository.Repository;
-import org.springframework.lang.NonNull;
 
-import java.util.List;
-import java.util.Optional;
+import java.io.Serializable;
 
 @NoRepositoryBean
-public interface MyRepository<T, ID> extends Repository<T, ID> {
+public interface MyRepository<T, ID extends Serializable> extends JpaRepository<T, ID> {
 
-    <E extends T> E save(@NonNull T entity);
+    boolean contains(T entity);
 
-    List<T> findAll();
-
-    <E extends T> Optional<E> findById(ID id);
 }

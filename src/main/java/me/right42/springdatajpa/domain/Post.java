@@ -4,12 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDateTime;
 
-@Setter
-@Getter
 @Entity
+@Getter @Setter
 public class Post {
 
     @Id
@@ -19,12 +17,9 @@ public class Post {
 
     private String title;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private final Set<Comment> comments = new HashSet<>();
+    @Lob
+    private String content;
 
-    public void addComment(Comment comment) {
-        this.comments.add(comment);
-        comment.setPost(this);
-    }
+    private LocalDateTime createdDate;
 
 }
