@@ -40,7 +40,7 @@ class PostRepositoryTest {
 
         assertThat(postRepository.contains(post)).isFalse();
 
-        postRepository.save(post);
+        postRepository.save(post.publish());
 
         assertThat(postRepository.contains(post)).isTrue();
     }
