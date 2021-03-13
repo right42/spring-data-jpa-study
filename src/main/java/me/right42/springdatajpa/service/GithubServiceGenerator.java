@@ -4,6 +4,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+
 public class GithubServiceGenerator {
 
     private static final String BASE_URL = "https://api.github.com/";
@@ -15,7 +16,7 @@ public class GithubServiceGenerator {
 
     private static Retrofit retrofit = builder.build();
 
-    private static OkHttpClient.Builder httpClient
+    private static final OkHttpClient.Builder httpClient
             = new OkHttpClient.Builder();
 
     public static <S> S createService(Class<S> serviceClass) {
