@@ -2,12 +2,16 @@ package me.right42.springdatajpa.web;
 
 import lombok.RequiredArgsConstructor;
 import me.right42.springdatajpa.domain.Post;
+import me.right42.springdatajpa.dto.PostSearch;
 import me.right42.springdatajpa.repository.PostRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +27,11 @@ public class PostRestController {
     @GetMapping("/posts")
     public Page<Post> getPosts(Pageable pageable){
         return postRepository.findAll(pageable);
+    }
+
+    @GetMapping("/posts/test")
+    public List<Post> getPosts(@ModelAttribute PostSearch postSearch) {
+        return postRepository.findByTitle(postSearch.getTitle());
     }
 
 }

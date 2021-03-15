@@ -61,4 +61,14 @@ class PostRestControllerTest {
         ;
     }
 
+
+    @Test
+    void test() throws Exception {
+        mockMvc.perform(
+                get("/posts/test")
+                    .param("title", "test")
+            )
+            .andExpect(status().isOk());
+
+    }
 }
