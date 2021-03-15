@@ -8,4 +8,6 @@ public interface PostCustomRepository {
 
     List<Post> findMyPost();
 
+    List<Post> findByTitle(String keyword);
+
 }
