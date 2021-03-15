@@ -1,15 +1,16 @@
 package me.right42.springdatajpa.repository;
 
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.RequiredArgsConstructor;
 import me.right42.springdatajpa.domain.Post;
 import me.right42.springdatajpa.domain.QPost;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+
+import static me.right42.springdatajpa.domain.QPost.*;
 
 @Repository
 public class PostCustomRepositoryDefault implements PostCustomRepository {
@@ -37,16 +38,16 @@ public class PostCustomRepositoryDefault implements PostCustomRepository {
 
         return query
                 .selectFrom(post)
-                .where(likeTitle(post, keyword))
+                .where(containsTitle(keyword))
                 .fetch();
     }
 
-    private BooleanExpression likeTitle(QPost post, String keyword) {
-        if(post == null) {
+    private BooleanExpression containsTitle(String keyword) {
+        if(!StringUtils.hasText(keyword)) {
             return null;
         }
 
-        return post.title.like(keyword);
+        return post.title.contains(keyword);
     }
 
 

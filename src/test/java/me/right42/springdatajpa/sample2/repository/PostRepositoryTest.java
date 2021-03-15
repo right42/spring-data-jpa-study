@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
@@ -43,6 +45,12 @@ class PostRepositoryTest {
         postRepository.save(post.publish());
 
         assertThat(postRepository.contains(post)).isTrue();
+    }
+
+    @Test
+    void querydsl() {
+        List<Post> posts = postRepository.findByTitle("test");
+
     }
 
 }
