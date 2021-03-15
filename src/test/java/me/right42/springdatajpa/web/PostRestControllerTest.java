@@ -7,11 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -43,9 +39,7 @@ class PostRestControllerTest {
 
     @Test
     void getPosts() throws Exception {
-        Post post = new Post();
-        post.setTitle("title");
-        postRepository.save(post);
+        createPost(100);
 
         mockMvc.perform(
                     get("/posts")
@@ -56,9 +50,18 @@ class PostRestControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].title").value("title"))
+                .andExpect(jsonPath("$.page.size").value("10"))
 
         ;
+    }
+
+    private void createPost(int postsCount) {
+        while(postsCount > 0) {
+            Post post = new Post();
+            post.setTitle("title");
+            postRepository.save(post);
+            postsCount--;
+        }
     }
 
 

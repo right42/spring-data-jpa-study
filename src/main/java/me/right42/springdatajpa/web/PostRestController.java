@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import me.right42.springdatajpa.domain.Post;
 import me.right42.springdatajpa.dto.PostSearch;
 import me.right42.springdatajpa.repository.PostRepository;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,8 +27,8 @@ public class PostRestController {
     }
 
     @GetMapping("/posts")
-    public Page<Post> getPosts(Pageable pageable){
-        return postRepository.findAll(pageable);
+    public PagedModel<EntityModel<Post>> getPosts(Pageable pageable, PagedResourcesAssembler<Post> postPagedResourcesAssembler){
+        return postPagedResourcesAssembler.toModel(postRepository.findAll(pageable));
     }
 
     @GetMapping("/posts/test")
