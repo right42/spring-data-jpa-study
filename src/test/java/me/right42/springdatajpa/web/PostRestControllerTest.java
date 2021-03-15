@@ -28,7 +28,7 @@ class PostRestControllerTest {
 
 
     @Test
-    void getTest() throws Exception {
+    void getPost() throws Exception {
         Post post = new Post();
         post.setTitle("title");
         postRepository.save(post);
@@ -37,6 +37,26 @@ class PostRestControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("title"))
+
+        ;
+    }
+
+    @Test
+    void getPosts() throws Exception {
+        Post post = new Post();
+        post.setTitle("title");
+        postRepository.save(post);
+
+        mockMvc.perform(
+                    get("/posts")
+                        .param("page", "0")
+                        .param("size", "10")
+                        .param("sort", "createdDate,desc")
+                        .param("sort", "title")
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].title").value("title"))
 
         ;
     }
