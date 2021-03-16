@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
+@NamedQuery(name = "Post.findByTitleWithNamedQuery", query = "SELECT p from Post p WHERE p.title = :title")
 public class Post extends AbstractAggregateRoot<Post> {
 
     @Id

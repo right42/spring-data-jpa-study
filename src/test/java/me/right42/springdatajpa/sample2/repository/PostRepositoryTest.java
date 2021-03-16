@@ -75,4 +75,20 @@ class PostRepositoryTest {
         postRepository.findAll();
     }
 
+    @Test
+    void queryTest(){
+        Post post = new Post();
+        post.setTitle("jpa study");
+        postRepository.save(post);
+
+        List<Post> jpa = postRepository.findByTitleStartsWith("jpa");
+        assertThat(jpa).isNotEmpty();
+
+        List<Post> namedQueryResult = postRepository.findByTitleWithNamedQuery(post.getTitle());
+        assertThat(namedQueryResult).isNotEmpty();
+
+        List<Post> queryResult = postRepository.findByTitleWithQuery(post.getTitle());
+        assertThat(queryResult).isNotEmpty();
+    }
+
 }
