@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.JpaSort;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -91,4 +93,18 @@ class PostRepositoryTest {
         assertThat(queryResult).isNotEmpty();
     }
 
+    @Test
+    void sortTest(){
+        Post post = new Post();
+        post.setTitle("jpa study");
+        postRepository.save(post);
+
+        List<Post> posts = postRepository.findByTitleWithQuery(post.getTitle(), Sort.by("title"));
+
+        assertThat(posts).isNotEmpty();
+
+        List<Post> unsafeSortPosts = postRepository.findByTitleWithQuery(post.getTitle(), JpaSort.unsafe("LENGTH(title)"));
+
+        assertThat(unsafeSortPosts).isNotEmpty();
+    }
 }
