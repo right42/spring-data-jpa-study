@@ -14,6 +14,7 @@ import org.springframework.data.jpa.domain.JpaSort;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -79,9 +80,7 @@ class PostRepositoryTest {
 
     @Test
     void queryTest(){
-        Post post = new Post();
-        post.setTitle("jpa study");
-        postRepository.save(post);
+        Post post = savePost();
 
         List<Post> jpa = postRepository.findByTitleStartsWith("jpa");
         assertThat(jpa).isNotEmpty();
@@ -95,9 +94,7 @@ class PostRepositoryTest {
 
     @Test
     void sortTest(){
-        Post post = new Post();
-        post.setTitle("jpa study");
-        postRepository.save(post);
+        Post post = savePost();
 
         List<Post> posts = postRepository.findByTitleWithQuery(post.getTitle(), Sort.by("title"));
 
@@ -106,5 +103,24 @@ class PostRepositoryTest {
         List<Post> unsafeSortPosts = postRepository.findByTitleWithQuery(post.getTitle(), JpaSort.unsafe("LENGTH(title)"));
 
         assertThat(unsafeSortPosts).isNotEmpty();
+    }
+
+
+    @Test
+    void updateTest(){
+        Post post = savePost();
+
+        postRepository.updateTitle("jpa1", post.getId());
+
+        Optional<Post> byId = postRepository.findById(post.getId());
+        assertThat(byId).isNotEmpty();
+        assertThat(byId.get().getTitle()).isEqualTo("jpa1");
+    }
+
+    private Post savePost() {
+        Post post = new Post();
+        post.setTitle("jpa study");
+        postRepository.save(post);
+        return post;
     }
 }
