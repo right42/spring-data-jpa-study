@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -23,6 +24,9 @@ class PostRepositoryTest {
 
     @Autowired
     ApplicationContext applicationContext;
+
+    @Autowired
+    EntityManager entityManager;
 
     @Test
     void event(){
@@ -48,9 +52,27 @@ class PostRepositoryTest {
     }
 
     @Test
-    void querydsl() {
-        List<Post> posts = postRepository.findByTitle("test");
+    void saveTest() {
+        Post post = new Post();
+        post.setTitle("Jpa");
 
+        Post savedPost = postRepository.save(post);
+
+        assertThat(entityManager.contains(post)).isTrue();
+        assertThat(entityManager.contains(savedPost)).isTrue();
+        assertThat(savedPost).isEqualTo(post);
+
+        Post updatePost = new Post();
+        updatePost.setId(post.getId());
+        updatePost.setTitle("Hibernate");
+
+        Post updatedPost = postRepository.save(updatePost);
+
+        assertThat(updatedPost).isNotEqualTo(updatePost);
+        assertThat(entityManager.contains(updatedPost)).isTrue();
+        assertThat(entityManager.contains(updatePost)).isFalse();
+
+        postRepository.findAll();
     }
 
 }
