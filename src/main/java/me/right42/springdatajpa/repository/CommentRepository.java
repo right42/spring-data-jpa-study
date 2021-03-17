@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @EntityGraph(value = "Comment.post")
-    Optional<Comment> loadCommentById(Long id);
+    Optional<Comment> getCommentById(Long id);
 }
